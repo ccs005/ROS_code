@@ -1,0 +1,78 @@
+<robot name="laser"  xmlns:xacro="http://wiki.ros.org/xacro" >
+<!-- this is for laser -->
+      <xacro:property name="bracket_radius" value="0.01" />
+      <xacro:property name="bracket_length" value="0.15" />
+      <xacro:property name="joiny_braket_x" value="0" />
+      <xacro:property name="joiny_braket_y" value="0" />
+      <xacro:property name="bracket_mass" value="0.05" />
+      <xacro:property name="joiny_braket_z" value="${0.5*(bracket_length+base_length)}" />
+
+      <xacro:property name="laser_radius" value="0.03" />
+      <xacro:property name="laser_length" value="0.05" />
+       <xacro:property name="joiny_laser_x" value="0" />
+      <xacro:property name="joiny_laser_y" value="0" />
+            <xacro:property name="laser_mass" value="0.05" />
+      <xacro:property name="joiny_laser_z" value="${0.5*(bracket_length+laser_length)}" />
+
+      <link name="braket">
+            <visual>
+                  <geometry>
+                        <cylinder radius="${bracket_radius}" length="${bracket_length}" />
+                   </geometry>
+                  <origin xyz="0 0 0" rpy="0 0 0" />
+                   <material name="braket_color" >
+                        <color rgba="0 0 0 0.8" />
+                   </material>
+            </visual>
+            <collision>
+                   <geometry>
+                        <cylinder radius="${bracket_radius}" length="${bracket_length}" />
+                   </geometry>
+                  <origin xyz="0 0 0" rpy="0 0 0" />
+            </collision>
+            <xacro:cylinder_inertial_matrix m="${bracket_mass}"  r="${bracket_radius}" h="${bracket_length}"/>
+      </link>
+      <gazebo reference="braket" >
+      <material>Gazebo/Gray</material>
+      </gazebo>
+
+
+      <joint name="braket2base" type="fixed">
+            <parent link="base_link" />
+            <child link="braket"/>
+            <origin xyz="${joiny_braket_x} ${joiny_braket_y} ${joiny_braket_z}" rpy="0 0 0" />
+      </joint>
+
+      <link name="laser">
+            <visual>
+                  <geometry>
+                        <cylinder radius="${laser_radius}" length="${laser_length}" />
+                   </geometry>
+                  <origin xyz="0 0 0" rpy="0 0 0" />
+                   <material name="laser_color" >
+                        <color rgba="0 0 1 0.8" />
+                   </material>
+            </visual>
+            <collision>
+                  <geometry>
+                        <cylinder radius="${laser_radius}" length="${laser_length}" />
+                   </geometry>
+                  <origin xyz="0 0 0" rpy="0 0 0" />
+            </collision>
+            <xacro:cylinder_inertial_matrix m="${laser_mass}" r="${laser_radius}" h="${laser_length}" />
+      </link>
+      <gazebo reference="laser">
+            <material>Gazebo/Red</material>
+      </gazebo>
+
+
+      <joint name="laser2braket" type="fixed">
+            <parent link="braket" />
+            <child link="laser"/>
+            <axis xyz=" 0 0 0" />
+            <origin xyz="${joiny_laser_x} ${joiny_laser_y} ${joiny_laser_z}" rpy="0 0 0" />
+      </joint>
+
+
+
+</robot>
